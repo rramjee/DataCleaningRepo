@@ -1,0 +1,25 @@
+best <- function(state,outcome)
+{
+	cBaseDir <-getwd() 
+	cOutCome<-paste("Hospital 30-Day Death (Mortality) Rates from",outcome,sep= " ")
+	inputfile<-paste(cBaseDir,"outcome-of-care-measures.csv",sep="/")
+	dfHosCarMeas<-read.csv(inputfile,colClasses = "character",check.names=FALSE)
+	if(nrow(subset(dfHosCarMeas, dfHosCarMeas$State==state)>0))
+	{
+		if (any(toupper(names(dfHosCarMeas))==toupper(cOutCome)))
+		{
+			minMortVal<-min(dfHosCarMeas[[cOutCome]],na.rm=T)
+			outputBestHos<-tapply(dfHosCarMeas[[t]],dfHosCarMeas[[cOutCome]]==minMortVal,sort)[2]
+			outputBestHos[[1]][[1]]
+		}
+		else
+		{
+			stop("invalid outcome")
+		}
+	}
+	else
+	{
+		stop("invalid state")
+	}
+}
+
